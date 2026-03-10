@@ -1,22 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 255, 247, 237;
-  --background-end-rgb: 255, 255, 255;
+  --foreground-rgb: 253, 246, 236;
+  --background-rgb: 15, 15, 26;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-end-rgb));
+  background: rgb(var(--background-rgb));
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0f0f1a;
+}
+::-webkit-scrollbar-thumb {
+  background: #373780;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f5c842;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+
+  .glass {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-gold {
+    background: rgba(245, 200, 66, 0.06);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(245, 200, 66, 0.15);
+  }
+
+  .glass-dark {
+    background: rgba(15, 15, 26, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .text-gold {
+    color: #f5c842;
+  }
+
+  .text-coral {
+    color: #ff6b6b;
+  }
+
+  .gradient-gold {
+    background: linear-gradient(135deg, #f5c842 0%, #e8b020 100%);
+  }
+
+  .gradient-text-gold {
+    background: linear-gradient(135deg, #f5c842 0%, #fdf6ec 60%, #f5c842 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-coral {
+    background: linear-gradient(135deg, #ff6b6b 0%, #f5c842 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .blob {
+    border-radius: 50% 60% 70% 40% / 50% 40% 60% 50%;
+    filter: blur(60px);
+    opacity: 0.15;
+  }
+
+  .font-display {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+/* Smooth transitions on all interactive elements */
+a, button, input, select, textarea {
+  transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
 }
