@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  displayName  String
+  createdAt    DateTime @default(now())
+
+  ownedGroups   Group[]
+  memberships   GroupMember[]
+  wishlistItems WishlistItem[]
+  claims        Claim[]
+}
+
+model Group {
+  id           String    @id @default(uuid())
+  name         String
+  description  String?
+  ownerId      String
+  exchangeDate DateTime?
+  budget       Float?
+  createdAt    DateTime  @default(now())
+
+  owner        User          @relation(fields: [ownerId], references: [id])
+  members      GroupMember[]
+  invites      GroupInvite[]
+  wishlistItems WishlistItem[]
+}
+
+model GroupMember {
+  id       String   @id @default(uuid())
+  groupId  String
+  userId   String
+  joinedAt DateTime @default(now())
+
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id])
+
+  @@unique([groupId, userId])
+}
+
+model GroupInvite {
+  id        String   @id @default(uuid())
+  groupId   String
+  email     String
+  token     String   @unique
+  accepted  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+}
+
+model WishlistItem {
+  id          String  @id @default(uuid())
+  userId      String
+  groupId     String
+  title       String
+  description String?
+  url         String?
+  price       Float?
+
+  user  User  @relation(fields: [userId], references: [id])
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  claim Claim?
+}
+
+model Claim {
+  id              String   @id @default(uuid())
+  wishlistItemId  String   @unique
+  claimedByUserId String
+  pledgeAmount    Float?
+  createdAt       DateTime @default(now())
+
+  wishlistItem WishlistItem @relation(fields: [wishlistItemId], references: [id], onDelete: Cascade)
+  claimedBy    User         @relation(fields: [claimedByUserId], references: [id])
+}
